@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace - 对应具体的接口的名字  -->
+<mapper namespace="com.aowin.dao.CardMapper">
+
+	<select id="getCardByCardCode" parameterType="String" resultType="com.aowin.model.Card">
+		select
+			card_id cardId,
+			card_code cardCode,
+			card_type cardType
+		from
+			card
+		where
+			card_code=#{cardCode}
+	</select>
+</mapper>

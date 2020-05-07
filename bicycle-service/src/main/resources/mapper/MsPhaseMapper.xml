@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace - 对应具体的接口的名字  -->
+<mapper namespace="com.aowin.dao.MsPhaseMapper">
+
+	<insert id="insert" parameterType="com.aowin.model.MsPhase">
+		insert into msphase (url,description) values (#{url},#{description})
+	</insert>
+	
+	<update id="update" parameterType="com.aowin.model.MsPhase">
+		update msphase set url = #{url},description=#{description} where phaseid=#{phaseId}
+	</update>
+	
+	<select id="select" parameterType="com.aowin.model.MsPhase" resultType="com.aowin.model.MsPhase">
+		select
+			*
+		from 
+			msphase	
+		<where>
+			<if test="url != null and url != ''">
+				and url like concat('%',#{url},'%')
+			</if>
+			<if test="description != null and description != ''">
+				and description like concat('%',#{description},'%')
+			</if>
+		</where>
+	</select>
+	<select id="selectById" parameterType="java.lang.Integer" resultType="com.aowin.model.MsPhase">
+		select
+			*
+		from 
+			msphase	
+		where
+			phaseid = #{phaseId}
+	</select>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from msphase where phaseid = #{phaseId}
+	</delete>
+	
+</mapper>

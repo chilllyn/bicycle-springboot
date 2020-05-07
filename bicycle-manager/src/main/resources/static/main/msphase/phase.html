@@ -1,0 +1,181 @@
+﻿
+<div class="row" id="phase">
+
+
+
+	<div class="col-lg-12">
+		<h1 class="page-header">权限管理</h1>
+		<button class="btn btn-primary" data-toggle="modal"
+			data-target="#optDiv"
+			@click="addDiv()">新增权限</button>
+			
+			
+			
+		<div v-show="type!=1" 
+			:class="{alert:true,'alert-success':type==2,'alert-danger':type==3}">
+        	{{type==2?"操作成功":"操作失败，请联系管理员"}}
+        </div>
+	</div>
+
+
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">权限列表</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<div id="dataTables-example_wrapper"
+					class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<div id="dataTables-example_filter" class="dataTables_filter">
+								<label> url: 
+									<input type="text" v-model.trim.lazy="queryCondition.url"
+										class="form-control input-sm"
+										aria-controls="dataTables-example">
+								</label> 
+								<label>
+									权限描述： 
+									<input type="text" v-model.trim.lazy="queryCondition.description"
+									class="form-control input-sm"
+									aria-controls="dataTables-example">
+								</label>
+								<button type="button" class="btn btn-info" @click="goPage(1)">查询</button>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<table width="100%"
+								class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline"
+								role="grid" aria-describedby="dataTables-example_info"
+								style="width: 100%;">
+								<thead>
+									<tr role="row">
+										<th>权限Id</th>
+										<th>权限url</th>
+										<th>权限描述</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="(item,index) in list"
+										:class="{gradeA:true,even:index%2==0,odd:index%2==1}"
+										role="row">
+										<td class="sorting_1">{{item.phaseId}}</td>
+										<td>{{item.url}}</td>
+										<td>{{item.description}}</td>
+										<td>
+											<button title="修改" type="button"
+												class="btn btn-info btn-circle">
+												<i class="fa fa-check"></i>
+											</button>
+											<button title="删除" type="button"
+												class="btn btn-warning btn-circle">
+												<i class="fa fa-times"></i>
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="dataTables_info" id="dataTables-example_info"
+								role="status" aria-live="polite">
+								每页显示{{pageInfo.pageSize}}条，共{{pageInfo.total}}条</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="dataTables_paginate paging_simple_numbers"
+								id="dataTables-example_paginate">
+								<ul class="pagination">
+									<li
+										:class="{paginate_button:true, previous:true, disabled:pageInfo.isFirstPage}"
+										aria-controls="dataTables-example" tabindex="0"
+										id="dataTables-example_previous"><a
+										href="javascript:void(0)" @click="goPage(pageInfo.pageNum-1)">上一页</a>
+									</li>
+
+
+									<li v-for="item in pageInfo.navigatepageNums"
+										:class="{paginate_button:true, active:item==pageInfo.pageNum}"
+										aria-controls="dataTables-example" tabindex="0"><a
+										href="javascript:void(0)" @click="goPage(item)">{{item}}</a></li>
+
+									<li
+										:class="{paginate_button:true, next:true, disabled:pageInfo.isLastPage}"
+										aria-controls="dataTables-example" tabindex="0"
+										id="dataTables-example_next"><a href="javascript:void(0)"
+										@click="goPage(pageInfo.pageNum+1)">下一页</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+	<!-- 新增和修改的弹出层 -->
+	<div class="modal fade" id="optDiv" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true"
+		style="display: none;">
+		<div class="modal-dialog" style="width: 1200px;">
+			<div class="modal-content" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h4 class="modal-title" id="myModalLabel">{{isUpdate?"修改权限":"新增权限"}}</h4>
+				</div>
+				<div class="modal-body">
+					<div v-show="isUpdate" class="form-group">
+						<label>权限Id</label> <input class="form-control"
+							readonly="readonly" :value="msPhase.phaseId">
+					</div>
+
+					<div class="form-group">
+						<label>权限url</label> 
+						<input placeholder="权限url以/开头，2-100位字母组成"
+							class="form-control" v-model.lazy.trim="msPhase.url"/>
+					</div>
+
+					<div v-show="!valid[0]" class="alert alert-danger">
+						非法：权限url必须以/开头，2-100位字母组成
+					</div>
+
+					<div class="form-group">
+						<label>权限描述</label> <input placeholder="由2-50位中文汉字组成"
+							class="form-control" v-model.lazy.trim="msPhase.description"
+							 />
+					</div>
+
+					<div v-show="!valid[1]" class="alert alert-danger">
+						非法：权限描述必须由2-50位中文汉字组成
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button @click="save()" type="button"
+						class="btn btn-primary">保存</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+
+
+</div>
+<!-- 相对路径 相对于/main/index.html -->
+<script type="text/javascript" src="../js/phase.js"></script>
+

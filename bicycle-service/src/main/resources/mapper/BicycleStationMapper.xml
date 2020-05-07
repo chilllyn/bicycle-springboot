@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace - 对应具体的接口的名字  -->
+<mapper namespace="com.aowin.dao.BicycleStationMapper">
+
+	<select id="listStation" parameterType="com.aowin.model.BicycleStation" resultType="com.aowin.model.BicycleStation">
+		select 
+			STATION_ID stationId,
+			STATION_CODE stationCode,
+			STATION_NAME stationName,
+			BICYCLE_PILE_NUM bicyclePileNum,
+			ADDRESS
+		from
+			bicycle_station
+		<where>
+			<if test="stationName != null and stationName != ''">
+				and station_name like concat('%',#{stationName},'%')
+			</if>
+			<if test="address != null and address != ''">
+				and address like concat('%',#{address},'%')
+			</if>
+		</where>
+	</select>
+	
+</mapper>

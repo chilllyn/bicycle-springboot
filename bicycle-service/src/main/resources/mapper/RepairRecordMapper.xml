@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace - 对应具体的接口的名字  -->
+<mapper namespace="com.aowin.dao.RepairRecordMapper">
+
+	<select id="listScrapBicycle" 
+		resultType="com.aowin.model.RepairRecord">
+		select
+			repair_record.bicycle_id bicycleId,
+			repair_record.operator_time operatorTime,
+			bicycle_code bicycleCode,
+			record_id recordId
+		from
+			repair_record,bicycle_info
+		where
+			repair_record.bicycle_id=bicycle_info.bicycle_id
+		and
+			repair_result=#{arg0.repairResult}
+		and
+			status=#{arg1}
+		<if test="arg0.bicycleCode != null and arg0.bicycleCode != ''">
+			and bicycle_code like concat('%',#{arg0.bicycleCode},'%')
+		</if>
+		<if test="arg0.operatorTime != null and arg0.operatorTime != ''">
+			and repair_record.operator_time like concat('%',#{arg0.operatorTime},'%')
+		</if>
+	</select>
+
+	<insert id="insert" parameterType="com.aowin.model.RepairRecord"
+	useGeneratedKeys="true" keyProperty="recordId">
+		insert into
+			repair_record(
+				bicycle_id,
+				repair_type,
+				repair_part,
+				repair_result,
+				fee,
+				repairer,
+				repair_date,
+				remark,
+				user_id,
+				operator_time
+			)
+		values(
+			#{bicycleId},
+			#{repairType},
+			#{repairPart},
+			#{repairResult},
+			#{fee},
+			#{repairer},
+			curdate(),
+			#{remark},
+			#{userId},
+			now()
+		)
+	</insert>
+</mapper>

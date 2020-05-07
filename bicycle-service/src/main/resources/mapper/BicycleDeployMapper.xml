@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace - 对应具体的接口的名字  -->
+<mapper namespace="com.aowin.dao.BicycleDeployMapper">
+
+	<!-- 调入明细 -->
+	<insert id="insertTo" parameterType="com.aowin.model.BicycleDeploy" 
+	useGeneratedKeys="true" keyProperty="deployId">
+		insert into
+			bicycle_deploy(
+				bicycle_id,
+				to_pile_id,
+				to_card_id,
+				to_time,
+				to_reason
+			)
+		values(
+			#{bicycleId},
+			#{toPileId},
+			#{toCardId},
+			now(),
+			#{toReason}
+		)
+	</insert>
+	<!-- 调出明细 -->
+	<insert id="insertFrom" parameterType="com.aowin.model.BicycleDeploy" 
+	useGeneratedKeys="true" keyProperty="deployId">
+		insert into
+			bicycle_deploy(
+				bicycle_id,
+				from_pile_id,
+				from_card_id,
+				from_time,
+				from_reason
+			)
+		values(
+			#{bicycleId},
+			#{fromPileId},
+			#{fromCardId},
+			now(),
+			#{fromReason}
+		)
+	</insert>
+	
+</mapper>

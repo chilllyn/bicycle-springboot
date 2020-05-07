@@ -1,0 +1,128 @@
+﻿<div class="row" id="scrap">
+
+	<div class="col-lg-12">
+		<br>
+		<div v-show="status!=1" 
+			:class="{alert:true,'alert-success':status==2,'alert-danger':status==3}">
+        	{{tips}}
+        </div>
+		<br>
+		<div class="panel panel-default">
+			<div class="panel-heading">报废车辆</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<div id="dataTables-example_wrapper"
+					class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<div id="dataTables-example_filter" class="dataTables_filter">
+								<label> 车辆编号:
+									<input type="text" v-model.trim.lazy="queryCondition.bicycleCode"
+										class="form-control input-sm"
+										aria-controls="dataTables-example">
+								</label> 
+								<label> 维修日期:
+									<input type="date" v-model.trim.lazy="queryCondition.operatorTime"
+									class="form-control input-sm"
+									aria-controls="dataTables-example">
+								</label>
+								<button type="button" class="btn btn-primary" @click="goPage(1)">查询</button>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<table width="100%"
+								class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline"
+								role="grid" aria-describedby="dataTables-example_info"
+								style="width: 100%;">
+								<thead>
+									<tr role="row">
+										<th>车辆编号</th>
+										<th>维修日期</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="(item,index) in list"
+										:class="{gradeA:true,even:index%2==0,odd:index%2==1}"
+										role="row">
+										<td>{{item.bicycleCode}}</td>
+										<td>{{item.operatorTime}}</td>
+										<td>
+											<button type="button" class="btn btn-primary" 
+												@click="confirm(item.bicycleId,item.bicycleCode,item.recordId)"
+												data-toggle="modal" data-target="#confirmModal"
+											>报废登记</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4">
+							<div class="dataTables_info" id="dataTables-example_info"
+								role="status" aria-live="polite">
+								每页显示{{pageInfo.pageSize}}条，共{{pageInfo.total}}条
+							</div>
+						</div>
+						<div class="col-sm-8">
+							<div class="dataTables_paginate paging_simple_numbers"
+								id="dataTables-example_paginate">
+								<ul class="pagination">
+									<li
+										:class="{paginate_button:true, previous:true, disabled:pageInfo.isFirstPage}"
+										aria-controls="dataTables-example" tabindex="0"
+										id="dataTables-example_previous">
+										<a href="javascript:void(0)" @click="goPage(pageInfo.pageNum-1)">上一页</a>
+									</li>
+
+									<li v-for="item in pageInfo.navigatepageNums"
+										:class="{paginate_button:true, active:item==pageInfo.pageNum}"
+										aria-controls="dataTables-example" tabindex="0">
+										<a href="javascript:void(0)" @click="goPage(item)">{{item}}</a>
+									</li>
+									<li
+										:class="{paginate_button:true, next:true, disabled:pageInfo.isLastPage}"
+										aria-controls="dataTables-example" tabindex="0"
+										id="dataTables-example_next">
+										<a href="javascript:void(0)" @click="goPage(pageInfo.pageNum+1)">下一页</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	 <!-- 报废确认框 -->
+	 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">确认报废吗？</h4>
+                </div>
+                <div class="modal-body">
+					<dl class="dl-horizontal">
+                        <dt>车辆编号</dt>
+                        <dd>{{repairRecord.bicycleCode}}</dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" @click="scrap">确认</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+</div>
+
+<script type="text/javascript" src="../js/scrap.js"></script>
+

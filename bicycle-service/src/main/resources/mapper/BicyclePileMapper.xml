@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace - 对应具体的接口的名字  -->
+<mapper namespace="com.aowin.dao.BicyclePileMapper">
+
+	<!-- 调入更新 -->
+	<update id="updateTo">
+		update 
+			bicycle_pile
+		set
+			status=#{arg2},
+			bicycle_id=#{arg0.bicycleId}
+		where
+			pile_id=#{arg0.pileId}
+		and
+			status=#{arg1}
+		and
+			bicycle_id&lt;=&gt;null;
+	</update>
+	<!-- 调出更新 -->
+	<update id="updateFrom">
+		update 
+			bicycle_pile
+		set
+			status=#{arg2},
+			bicycle_id=null
+		where
+			pile_id=#{arg0.pileId}
+		and
+			status=#{arg1}
+		and
+			bicycle_id=#{arg0.bicycleId}
+	</update>
+	<!-- 某车点车桩列表 -->
+	<select id="listPile" parameterType="java.lang.Integer" resultType="com.aowin.model.BicyclePile">
+		select
+			bicycle_pile.pile_id pileId,
+			pile_code pileCode,
+			bicycle_pile.bicycle_id bicycleId,
+			bicycle_code bicycleCode
+		from 
+			bicycle_pile
+		left join
+			bicycle_info
+		on
+			bicycle_pile.bicycle_id=bicycle_info.bicycle_id
+		where
+			station_id=#{stationId}
+	</select>
+	
+</mapper>

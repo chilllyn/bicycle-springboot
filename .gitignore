@@ -1,0 +1,4 @@
+# Project exclude paths
+/bicycle-manager/target/
+/bicycle-service/target/
+/bicycle-web/target/

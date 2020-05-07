@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace - 对应具体的接口的名字  -->
+<mapper namespace="com.aowin.dao.SyuserMapper">
+
+	<!-- 通过roleId获取有权限的url路径 -->
+	<select id="getUrl" parameterType="java.lang.Integer" resultType="java.lang.String">
+		SELECT
+			url 
+		FROM
+			msphase,
+			sypermission,
+			syuser 
+		WHERE
+			syuser.role_id = sypermission.roleid 
+			AND sypermission.phaseid = msphase.phaseid 
+			AND syuser.role_id =#{roleId}
+	</select>
+
+	<!-- 通过手机号获取用户 -->
+	<select id="getSyuserByMobilePhone" parameterType="java.lang.String" resultType="com.aowin.model.Syuser">
+		select
+			<include refid="syuserResult"></include>
+		from
+			syuser
+		where
+			mobile_phone = #{mobilePhone}
+	</select>
+	
+	<!-- 用户名密码登录 -->
+	<select id="login" parameterType="com.aowin.model.Syuser" resultType="com.aowin.model.Syuser">
+		select
+			<include refid="syuserResult"></include>
+		from
+			syuser
+		where
+			login_name = #{loginName}
+		and
+			password = md5(#{password})
+	</select>
+	
+	<sql id="syuserResult">
+		USER_ID userId,
+		ROLE_ID roleId,
+		LOGIN_NAME loginName,
+		USERNAME ,
+		PASSWORD,
+		ACTIVE_FLAG activeFlag,
+		ZXBJ,
+		OFFICE_PHONE officePhone,
+		MOBILE_PHONE mobilePhone,
+		EMAIL
+	</sql>
+	
+</mapper>

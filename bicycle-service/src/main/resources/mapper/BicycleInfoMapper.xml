@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace - 对应具体的接口的名字  -->
+<mapper namespace="com.aowin.dao.BicycleInfoMapper">
+
+	<!-- 根据状态查询自行车 -->
+	<select id="listBicycle" parameterType="com.aowin.model.BicycleInfo"
+		resultType="com.aowin.model.BicycleInfo">
+		select
+			bicycle_id bicycleId,
+			bicycle_code bicycleCode,
+			operator_time operatorTime
+		from
+			bicycle_info
+		where
+			status=#{status}
+		<if test="bicycleCode != null and bicycleCode != ''">
+			and bicycle_code like concat('%',#{bicycleCode},'%')
+		</if>
+		<if test="operatorTime != null and operatorTime != ''">
+			and operator_time like concat('%',#{operatorTime},'%')
+		</if>
+	</select>
+
+	<!-- 调入更新自行车信息 -->
+	<update id="updateTo">
+		update
+			bicycle_info
+		set
+			status=#{arg2},
+			pile_id=#{arg0.pileId},
+			operator_time=now(),
+			card_id=#{arg0.cardId}
+		where
+			bicycle_id=#{arg0.bicycleId}
+		and
+			pile_id&lt;=&gt;null
+		and
+			status=#{arg1}
+	</update>
+	
+	<!-- 调出更新自行车信息 -->
+	<update id="updateFrom">
+		update
+			bicycle_info
+		set
+			status=#{arg2},
+			pile_id=null,
+			operator_time=now(),
+			card_id=#{arg0.cardId}
+		where
+			bicycle_id=#{arg0.bicycleId}
+		and
+			pile_id=#{arg0.pileId}
+		and
+			status=#{arg1}
+	</update>
+	
+	<!-- 维修/报废更新自行车信息 -->
+	<update id="updateRepair">
+		update
+			bicycle_info
+		set
+			status=#{arg2},
+			operator_time=now(),
+			user_id=#{arg0.userId}
+		where
+			bicycle_id=#{arg0.bicycleId}
+		and
+			status=#{arg1}
+	</update>
+</mapper>

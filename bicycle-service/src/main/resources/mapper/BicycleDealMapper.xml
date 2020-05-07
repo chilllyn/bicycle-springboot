@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace - 对应具体的接口的名字  -->
+<mapper namespace="com.aowin.dao.BicycleDealMapper">
+
+	<!-- 获取某车点某项业务的日均数 -->
+	<select id="getAvg" resultType="java.lang.Double">
+		SELECT
+			count(*)/days 
+		FROM
+			bicycle_deal,
+			(
+			SELECT 
+				TIMESTAMPDIFF(DAY,run_time,now( )) days 
+			FROM 
+				(SELECT run_time FROM bicycle_station WHERE station_id=#{arg0}) t1
+			) t2 
+		WHERE
+			deal_type =#{arg1}
+		AND 
+			pile_id 
+		IN 
+			(SELECT pile_id FROM bicycle_pile WHERE station_id=#{arg0})
+	</select>
+	<!-- 插入业务 -->
+	<insert id="insert" parameterType="com.aowin.model.BicycleDeal" >
+		insert into
+			bicycle_deal(
+				create_time,
+				deal_name,
+				deal_type,
+				record_id,
+				card_id,
+				is_fee,
+				chg_money,
+				fee_type,
+				bicycle_id,
+				pile_id,
+				user_id
+			)
+		values(
+			now(),
+			#{dealName},
+			#{dealType},
+			#{recordId},
+			#{cardId},
+			#{isFee},
+			#{chgMoney},
+			#{feeType},
+			#{bicycleId},
+			#{pileId},
+			#{userId}
+		)
+	</insert>
+	
+</mapper>
