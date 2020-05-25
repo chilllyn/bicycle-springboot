@@ -2,6 +2,9 @@ package com.aowin.service;
 
 import com.aowin.model.Syuser;
 
+/**
+ * @author 83998
+ */
 public interface SyuserService {
 
 	/**

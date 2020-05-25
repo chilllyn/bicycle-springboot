@@ -1,5 +1,8 @@
 package com.aowin.constants;
 
+/**
+ * @author 83998
+ */
 public interface RepairRecordConst {
 
 	/**
@@ -9,7 +12,7 @@ public interface RepairRecordConst {
 	/**
 	 * 更换零件
 	 */
-	int REPAIR_TYPE_REPALCE = 2;
+	int REPAIR_TYPE_REPLACE = 2;
 	/**
 	 * 普修+更换零件
 	 */

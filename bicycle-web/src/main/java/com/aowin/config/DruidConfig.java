@@ -10,10 +10,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * @author 83998
+ * 配置Druid的监控
+ */
 @Configuration
 public class DruidConfig {
     @ConfigurationProperties(prefix = "spring.datasource")
@@ -22,34 +27,45 @@ public class DruidConfig {
         return new DruidDataSource();
     }
 
-    //配置Druid的监控
-    //1、配置一个管理后台的Servlet
+    /**
+     * @Author Chill_Lyn
+     * @Description 配置一个管理后台的Servlet
+     * @Date 2020/5/25 20:17
+     * @Param []
+     * @return org.springframework.boot.web.servlet.ServletRegistrationBean<com.alibaba.druid.support.http.StatViewServlet>
+     **/
     @Bean
     public ServletRegistrationBean<StatViewServlet> statViewServlet() {
         ServletRegistrationBean<StatViewServlet> bean = new ServletRegistrationBean<StatViewServlet>(
                 new StatViewServlet(), "/druid/*");
-        Map<String, String> initParams = new HashMap<>();
+        Map<String, String> initParams = new HashMap<>(16);
 
         initParams.put("loginUsername", "admin");
         initParams.put("loginPassword", "123456");
-        initParams.put("allow", "");//默认就是允许所有访问
-//        initParams.put("deny", "192.168.2.2");
+        //默认就是允许所有访问
+        initParams.put("allow", "");
 
         bean.setInitParameters(initParams);
         return bean;
     }
 
-    //2、配置一个web监控的filter
+    /**
+     * @Author Chill_Lyn
+     * @Description 配置一个web监控的filter
+     * @Date 2020/5/25 20:17
+     * @Param []
+     * @return org.springframework.boot.web.servlet.FilterRegistrationBean<com.alibaba.druid.support.http.WebStatFilter>
+     **/
     @Bean
     public FilterRegistrationBean<WebStatFilter> webStatFilter() {
-        FilterRegistrationBean<WebStatFilter> bean = new FilterRegistrationBean<WebStatFilter>();
+        FilterRegistrationBean<WebStatFilter> bean = new FilterRegistrationBean<>();
         bean.setFilter(new WebStatFilter());
 
-        Map<String, String> initParams = new HashMap<>();
+        Map<String, String> initParams = new HashMap<>(16);
         initParams.put("exclusions", "*.js,*.css,/druid/*");
 
         bean.setInitParameters(initParams);
-        bean.setUrlPatterns(Arrays.asList("/*"));
+        bean.setUrlPatterns(Collections.singletonList("/*"));
 
         return bean;
     }

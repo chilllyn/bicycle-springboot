@@ -1,18 +1,23 @@
 package com.aowin.dao;
 
-import java.util.List;
-
 import com.aowin.model.RepairRecord;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+/**
+ * @author 83998
+ */
 @Mapper
 public interface RepairRecordMapper {
 
 	/**
-	 * 查询报废车辆
-	 * @param bicycleInfo
-	 * @return
-	 */
+	 * @Author Chill_Lyn
+	 * @Description 查询报废车辆
+	 * @Date 2020/5/25 21:04
+	 * @Param [repairRecord, status]
+	 * @return List<RepairRecord>
+	 **/
 	List<RepairRecord> listScrapBicycle(RepairRecord repairRecord, int status);
 
 	/**

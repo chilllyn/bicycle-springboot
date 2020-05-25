@@ -1,24 +1,27 @@
 package com.aowin.controller;
 
+import com.aowin.model.MsPhase;
+import com.aowin.service.impl.MsPhaseServiceImpl;
+import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aowin.model.MsPhase;
-import com.aowin.service.impl.MsPhaseServiceImpl;
-import com.github.pagehelper.PageInfo;
+import javax.annotation.Resource;
 
+/**
+ * @author 83998
+ */
 @RestController
 @RequestMapping("/main/msphase")
 public class MsPhaseController {
 
 	private Logger logger = Logger.getLogger(MsPhaseController.class);
 
-	@Autowired
+	@Resource
 	private MsPhaseServiceImpl msPhaseServiceImpl;
 
 	@RequestMapping("/select")
@@ -40,7 +43,6 @@ public class MsPhaseController {
 			return "fail";
 		}
 		try {
-
 			msPhaseServiceImpl.insert(msPhase);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -48,7 +50,5 @@ public class MsPhaseController {
 			return "error";
 		}
 		return "success";
-
 	}
-
 }

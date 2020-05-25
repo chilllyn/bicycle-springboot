@@ -1,5 +1,8 @@
 package com.aowin.constants;
 
+/**
+ * @author 83998
+ */
 public interface BicycleInfoConst {
 
 	/**

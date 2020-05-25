@@ -4,6 +4,9 @@ import com.aowin.model.BicycleStation;
 import com.aowin.model.UtilizationRate;
 import com.github.pagehelper.PageInfo;
 
+/**
+ * @author 83998
+ */
 public interface UtilizationRateService {
 
 	/**

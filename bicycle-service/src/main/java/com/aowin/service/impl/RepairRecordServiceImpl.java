@@ -1,10 +1,5 @@
 package com.aowin.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.aowin.constants.BicycleDealConst;
 import com.aowin.constants.BicycleInfoConst;
 import com.aowin.constants.PageConfig;
@@ -18,16 +13,23 @@ import com.aowin.model.RepairRecord;
 import com.aowin.service.RepairRecordService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * @author 83998
+ */
 @Service
 public class RepairRecordServiceImpl implements RepairRecordService {
 
-	@Autowired
+	@Resource
 	BicycleInfoMapper bicycleInfoMapper;
-	@Autowired
+	@Resource
 	RepairRecordMapper repairRecordMapper;
-	@Autowired
+	@Resource
 	BicycleDealMapper bicycleDealMapper;
 
 	/**
@@ -44,7 +46,7 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 	 * 维修记录
 	 */
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = {})
 	public void repairRecord(RepairRecord repairRecord) {
 		BicycleInfo bicycleInfo = new BicycleInfo();
 		bicycleInfo.setBicycleId(repairRecord.getBicycleId());
@@ -76,5 +78,4 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 			throw new ServiceException("车辆业务流水明细新增错误！");
 		}
 	}
-
 }

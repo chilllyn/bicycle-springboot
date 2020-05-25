@@ -1,20 +1,22 @@
 package com.aowin.listener;
 
-import java.util.concurrent.TimeUnit;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.TextMessage;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.TextMessage;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @author 83998
+ */
 @Component
 public class SendCodeListener{
 
-	@Autowired
+	@Resource
 	private StringRedisTemplate stringRedisTemlate;
 
 	@JmsListener(destination="${spring.activemq.queue-name}", containerFactory="queueListener")

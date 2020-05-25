@@ -1,24 +1,31 @@
 package com.aowin.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.aowin.model.Syuser;
+import com.aowin.service.SyuserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.aowin.model.Syuser;
-import com.aowin.service.SyuserService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author 83998
+ */
 public class AuthInterceptor implements HandlerInterceptor {
 
 	@Autowired
 	private SyuserService syuserServiceImpl;
 
 	/**
-	 * 预处理程序 调用controller方法之前
-	 * 返回false 不继续执行
-	 * 返回true 继续执行
-	 */
+	 * @Author 83998
+	 * @Description
+	 *        预处理程序 调用controller方法之前
+	 * 	 返回false 不继续执行
+	 * 	 返回true 继续执行
+	 * @Date 20:04 2020/5/25
+	 * @Param [request, response, handler]
+	 * @return boolean
+	 **/
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 	        HttpServletResponse response, Object handler) throws Exception {

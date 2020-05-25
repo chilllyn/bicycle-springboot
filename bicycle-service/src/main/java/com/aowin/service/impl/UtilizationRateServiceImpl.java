@@ -1,10 +1,5 @@
 package com.aowin.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.aowin.constants.BicycleDealConst;
 import com.aowin.constants.PageConfig;
 import com.aowin.dao.BicycleDealMapper;
@@ -14,13 +9,20 @@ import com.aowin.model.UtilizationRate;
 import com.aowin.service.UtilizationRateService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * @author 83998
+ */
 @Service
 public class UtilizationRateServiceImpl implements UtilizationRateService {
 
-	@Autowired
+	@Resource
 	BicycleStationMapper bicycleStationMapper;
-	@Autowired
+	@Resource
 	BicycleDealMapper bicycleDealMapper;
 
 	/**

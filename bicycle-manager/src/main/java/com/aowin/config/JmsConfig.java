@@ -2,7 +2,6 @@ package com.aowin.config;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
-import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +43,14 @@ public class JmsConfig {
         return new JmsMessagingTemplate(connectionFactory());
     }
 
-    // 在Queue模式中，对消息的监听需要对containerFactory进行配置
+
+    /**
+     * @Author Chill_Lyn
+     * @Description 在Queue模式中，对消息的监听需要对containerFactory进行配置
+     * @Date 2020/5/25 20:56
+     * @Param [connectionFactory]
+     * @return org.springframework.jms.config.JmsListenerContainerFactory<?>
+     **/
     @Bean("queueListener")
     public JmsListenerContainerFactory<?> queueJmsListenerContainerFactory(ConnectionFactory connectionFactory){
         SimpleJmsListenerContainerFactory factory = new SimpleJmsListenerContainerFactory();

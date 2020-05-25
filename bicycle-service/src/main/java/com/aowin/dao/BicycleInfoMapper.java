@@ -1,10 +1,13 @@
 package com.aowin.dao;
 
-import java.util.List;
-
 import com.aowin.model.BicycleInfo;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+/**
+ * @author 83998
+ */
 @Mapper
 public interface BicycleInfoMapper {
 

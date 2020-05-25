@@ -1,20 +1,22 @@
 package com.aowin.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.aowin.constants.PageConfig;
 import com.aowin.dao.MsPhaseMapper;
 import com.aowin.model.MsPhase;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * @author 83998
+ */
 @Service
 public class MsPhaseServiceImpl {
 
-	@Autowired
+	@Resource
 	MsPhaseMapper msPhaseMapper;
 
 	/**
@@ -31,10 +33,12 @@ public class MsPhaseServiceImpl {
 	}
 
 	/**
-	 * 新增权限
-	 * @param msPhone
-	 * @return
-	 */
+	 * @Author Chill_Lyn
+	 * @Description 新增权限
+	 * @Date 2020/5/25 21:24
+	 * @Param [msPhase]
+	 * @return int
+	 **/
 	public int insert(MsPhase msPhase) {
 		return msPhaseMapper.insert(msPhase);
 	}

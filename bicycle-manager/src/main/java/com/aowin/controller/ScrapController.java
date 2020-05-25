@@ -1,28 +1,30 @@
 package com.aowin.controller;
 
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.aowin.constants.RepairRecordConst;
 import com.aowin.exception.ServiceException;
 import com.aowin.model.RepairRecord;
 import com.aowin.model.Syuser;
 import com.aowin.service.ScrapService;
 import com.github.pagehelper.PageInfo;
+import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+/**
+ * @author 83998
+ */
 @RestController
 @RequestMapping("/main/scrap")
 public class ScrapController {
 
 	private Logger logger = Logger.getLogger(ScrapController.class);
 
-	@Autowired
+	@Resource
 	public ScrapService scrapServiceImpl;
 
 	@RequestMapping("/listScrapBicycle")

@@ -1,16 +1,5 @@
 package com.aowin.controller;
 
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.aowin.constants.BicycleInfoConst;
 import com.aowin.exception.ServiceException;
 import com.aowin.model.BicycleInfo;
@@ -18,14 +7,27 @@ import com.aowin.model.RepairRecord;
 import com.aowin.model.Syuser;
 import com.aowin.service.RepairRecordService;
 import com.github.pagehelper.PageInfo;
+import org.apache.log4j.Logger;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+/**
+ * @author 83998
+ */
 @RestController
 @RequestMapping("/main/repair")
 public class RepairController {
 
 	private Logger logger = Logger.getLogger(RepairController.class);
 
-	@Autowired
+	@Resource
 	public RepairRecordService repairRecordServiceImpl;
 
 	@RequestMapping("/listBicycle")

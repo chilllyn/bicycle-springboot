@@ -1,31 +1,31 @@
 package com.aowin.controller;
 
-import javax.jms.Queue;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.aowin.constants.SysuserConst;
+import com.aowin.model.Syuser;
+import com.aowin.service.CodeService;
+import com.aowin.service.SyuserService;
 import org.springframework.jms.core.JmsMessagingTemplate;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aowin.model.Syuser;
-import com.aowin.service.SyuserService;
-import com.aowin.service.CodeService;
+import javax.annotation.Resource;
+import javax.jms.Queue;
+import javax.servlet.http.HttpSession;
 
+/**
+ * @author 83998
+ */
 @RestController
 public class SyuserController {
-	@Autowired
+	@Resource
 	private SyuserService syuserServiceImpl;
-	@Autowired
-	private JmsTemplate jmsTemplate;
-	@Autowired
+	@Resource
 	private CodeService codeServiceImpl;
-	@Autowired
+	@Resource
 	private JmsMessagingTemplate jmsMessagingTemplate;
-	@Autowired
+	@Resource
 	private Queue queue;
 
 	/**
@@ -47,14 +47,13 @@ public class SyuserController {
 	@RequestMapping("/getCode")
 	public String getCode(Syuser syuser) {
 		String mobilePhone = syuser.getMobilePhone();
-		if (!mobilePhone.matches("^[1]([3-9])[0-9]{9}$")) {
+		if (!mobilePhone.matches(SysuserConst.PHONE_PATTERN)) {
 			return "error1";
 		}
 		if (syuserServiceImpl.getSyuserByMobilePhone(mobilePhone) == null) {
 			return "error2";
 		}
 		jmsMessagingTemplate.convertAndSend(queue,mobilePhone);
-//		jmsTemplate.convertAndSend(mobilePhone); // 将手机号码发送至JMS中
 		return "ok";
 	}
 
@@ -68,10 +67,10 @@ public class SyuserController {
 	public Syuser loginByVerificationCode(Syuser syuser, HttpSession session) {
 		String mobilePhone = syuser.getMobilePhone();
 		String verificationCode = syuser.getVerificationCode();
-		if (!mobilePhone.matches("^[1]([3-9])[0-9]{9}$")) {
+		if (!mobilePhone.matches(SysuserConst.PHONE_PATTERN)) {
 			return null;
 		}
-		if (!verificationCode.matches("^[0-9]{4}$")) {
+		if (!verificationCode.matches(SysuserConst.VERIFICATION_CODE4)) {
 			return null;
 		}
 

@@ -3,6 +3,9 @@ package com.aowin.dao;
 import com.aowin.model.BicycleDeal;
 import org.apache.ibatis.annotations.Mapper;
 
+/**
+ * @author 83998
+ */
 @Mapper
 public interface BicycleDealMapper {
 

@@ -1,11 +1,5 @@
 package com.aowin.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.aowin.constants.BicycleDealConst;
 import com.aowin.constants.BicycleInfoConst;
 import com.aowin.constants.PageConfig;
@@ -19,18 +13,26 @@ import com.aowin.model.RepairRecord;
 import com.aowin.service.ScrapService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * @author 83998
+ */
 @Service
 public class ScrapServiceImpl implements ScrapService {
 
-	@Autowired
+	@Resource
 	BicycleInfoMapper bicycleInfoMapper;
-	@Autowired
-	BicycleDealMapper bicycleDealMapepr;
-	@Autowired
+	@Resource
+	BicycleDealMapper bicycleDealMapper;
+	@Resource
 	RepairRecordMapper repairRecordMapper;
 
-	@Transactional
+	@Transactional(rollbackFor = {})
 	@Override
 	public void scrap(RepairRecord repairRecord) {
 		//修改车辆状态为（6：报废）
@@ -45,13 +47,13 @@ public class ScrapServiceImpl implements ScrapService {
 		//业务名称填写（报废）是否发生费用为（0：未发生）费用金额填写0
 		BicycleDeal bicycleDeal = new BicycleDeal();
 		bicycleDeal.setBicycleId(repairRecord.getBicycleId());
-		bicycleDeal.setChgMoney(0);
+		bicycleDeal.setChgMoney(0.0);
 		bicycleDeal.setDealName(BicycleDealConst.DEAL_NAME_SCRAP);
 		bicycleDeal.setDealType(BicycleDealConst.DEAL_TYPE_SCRAP);
 		bicycleDeal.setIsFee(BicycleDealConst.IS_FEE_NO);
 		bicycleDeal.setRecordId(repairRecord.getRecordId());
 		bicycleDeal.setUserId(repairRecord.getUserId());
-		result = bicycleDealMapepr.insert(bicycleDeal);
+		result = bicycleDealMapper.insert(bicycleDeal);
 		if (result != 1) {
 			throw new ServiceException("车辆业务流水增加错误！");
 		}
@@ -65,6 +67,6 @@ public class ScrapServiceImpl implements ScrapService {
 		PageHelper.startPage(pageNum, PageConfig.PAGE_SIZE);
 		List<RepairRecord> repairRecordList = repairRecordMapper.listScrapBicycle(repairRecord,
 		        BicycleInfoConst.STATUS_REPAIR_FAILURE);
-		return new PageInfo<RepairRecord>(repairRecordList);
+		return new PageInfo<>(repairRecordList);
 	}
 }

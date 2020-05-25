@@ -1,48 +1,42 @@
 package com.aowin.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.aowin.constants.BicycleDealConst;
 import com.aowin.constants.BicycleInfoConst;
 import com.aowin.constants.BicyclePileConst;
 import com.aowin.constants.PageConfig;
-import com.aowin.dao.BicycleDealMapper;
-import com.aowin.dao.BicycleDeployMapper;
-import com.aowin.dao.BicycleInfoMapper;
-import com.aowin.dao.BicyclePileMapper;
-import com.aowin.dao.BicycleStationMapper;
+import com.aowin.dao.*;
 import com.aowin.exception.ServiceException;
-import com.aowin.model.BicycleDeal;
-import com.aowin.model.BicycleDeploy;
-import com.aowin.model.BicycleInfo;
-import com.aowin.model.BicyclePile;
-import com.aowin.model.BicycleStation;
+import com.aowin.model.*;
 import com.aowin.service.RepairService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * @author 83998
+ */
 @Service
 public class RepairServiceImpl implements RepairService {
 
-	@Autowired
+	@Resource
 	BicycleStationMapper bicycleStationMapper;
-	@Autowired
+	@Resource
 	BicyclePileMapper bicyclePileMapper;
-	@Autowired
+	@Resource
 	BicycleInfoMapper bicycleInfoMapper;
-	@Autowired
+	@Resource
 	BicycleDeployMapper bicycleDeployMapper;
-	@Autowired
+	@Resource
 	BicycleDealMapper bicycleDealMapper;
 
 	/**
 	 * 维修调入
 	 */
-	@Transactional
+	@Transactional(rollbackFor = {})
 	@Override
 	public void to(BicycleDeploy bicycleDeploy) {
 		//修改车辆状态（7：维修成功）为（3：在桩）。
@@ -74,7 +68,7 @@ public class RepairServiceImpl implements RepairService {
 		BicycleDeal bicycleDeal = new BicycleDeal();
 		bicycleDeal.setBicycleId(bicycleDeploy.getBicycleId());
 		bicycleDeal.setCardId(bicycleDeploy.getToCardId());
-		bicycleDeal.setChgMoney(0);
+		bicycleDeal.setChgMoney(0.0);
 		bicycleDeal.setDealName(BicycleDealConst.DEAL_NAME_REPAIR_TO);
 		bicycleDeal.setDealType(BicycleDealConst.DEAL_TYPE_REPAIR_TO);
 		bicycleDeal.setIsFee(BicycleDealConst.IS_FEE_NO);
@@ -90,7 +84,7 @@ public class RepairServiceImpl implements RepairService {
 	 * 维修调出
 	 */
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = {})
 	public void from(BicycleDeploy bicycleDeploy) {
 		//将被选中的车辆的车辆状态改成（5：维修调出），将所在车桩的id清空。
 		BicycleInfo bicycleInfo = new BicycleInfo();
@@ -121,7 +115,7 @@ public class RepairServiceImpl implements RepairService {
 		BicycleDeal bicycleDeal = new BicycleDeal();
 		bicycleDeal.setBicycleId(bicycleDeploy.getBicycleId());
 		bicycleDeal.setCardId(bicycleDeploy.getFromCardId());
-		bicycleDeal.setChgMoney(0);
+		bicycleDeal.setChgMoney(0.0);
 		bicycleDeal.setDealName(BicycleDealConst.DEAL_NAME_REPAIR_FROM);
 		bicycleDeal.setDealType(BicycleDealConst.DEAL_TYPE_REPAIR_FROM);
 		bicycleDeal.setIsFee(BicycleDealConst.IS_FEE_NO);

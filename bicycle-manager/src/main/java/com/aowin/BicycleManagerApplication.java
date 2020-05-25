@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * @author 83998
+ */
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableJms

@@ -1,10 +1,13 @@
 package com.aowin.dao;
 
-import java.util.List;
-
 import com.aowin.model.BicyclePile;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+/**
+ * @author 83998
+ */
 @Mapper
 public interface BicyclePileMapper {
 	/**
@@ -15,12 +18,13 @@ public interface BicyclePileMapper {
 	List<BicyclePile> listPile(Integer stationId);
 
 	/**
-	 * 调出更新
-	 * @param bicycleDeploy
-	 * @param beforeStatus
-	 * @param afterStatus
-	 * @return
-	 */
+	 * @Author Chill_Lyn
+	 * @Description 调出更新
+	 * @Date 2020/5/25 20:27
+	 * @Param [bicyclePile, beforeStatus, afterStatus]
+	 * @return int
+	 **/
+
 	int updateFrom(BicyclePile bicyclePile, int beforeStatus, int afterStatus);
 
 	/**
